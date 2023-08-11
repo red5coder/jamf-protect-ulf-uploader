@@ -1,0 +1,390 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FBACB3BA2A8435A90096312C /* Jamf_Protect_ULF_UploaderApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBACB3B92A8435A90096312C /* Jamf_Protect_ULF_UploaderApp.swift */; };
+		FBACB3BC2A8435A90096312C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBACB3BB2A8435A90096312C /* ContentView.swift */; };
+		FBACB3BE2A8435AA0096312C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBACB3BD2A8435AA0096312C /* Assets.xcassets */; };
+		FBACB3C12A8435AA0096312C /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBACB3C02A8435AA0096312C /* Preview Assets.xcassets */; };
+		FBACB3C92A8435CA0096312C /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBACB3C82A8435CA0096312C /* Models.swift */; };
+		FBACB3CC2A84362A0096312C /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = FBACB3CB2A84362A0096312C /* Yams */; };
+		FBACB3CE2A850FB90096312C /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBACB3CD2A850FB90096312C /* Logger.swift */; };
+		FBACB3D02A850FEB0096312C /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBACB3CF2A850FEB0096312C /* Keychain.swift */; };
+		FBACB3D22A8510410096312C /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBACB3D12A8510410096312C /* SettingsView.swift */; };
+		FBDA126E2A85789000A69778 /* JamfProtectAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDA126D2A85789000A69778 /* JamfProtectAPI.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		FBACB3B62A8435A90096312C /* Jamf Protect ULF Uploader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Jamf Protect ULF Uploader.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBACB3B92A8435A90096312C /* Jamf_Protect_ULF_UploaderApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Jamf_Protect_ULF_UploaderApp.swift; sourceTree = "<group>"; };
+		FBACB3BB2A8435A90096312C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FBACB3BD2A8435AA0096312C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FBACB3C02A8435AA0096312C /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FBACB3C22A8435AA0096312C /* Jamf_Protect_ULF_Uploader.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Jamf_Protect_ULF_Uploader.entitlements; sourceTree = "<group>"; };
+		FBACB3C82A8435CA0096312C /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		FBACB3CD2A850FB90096312C /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		FBACB3CF2A850FEB0096312C /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
+		FBACB3D12A8510410096312C /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		FBDA126D2A85789000A69778 /* JamfProtectAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JamfProtectAPI.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FBACB3B32A8435A90096312C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBACB3CC2A84362A0096312C /* Yams in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FBACB3AD2A8435A90096312C = {
+			isa = PBXGroup;
+			children = (
+				FBACB3B82A8435A90096312C /* Jamf Protect ULF Uploader */,
+				FBACB3B72A8435A90096312C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FBACB3B72A8435A90096312C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FBACB3B62A8435A90096312C /* Jamf Protect ULF Uploader.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FBACB3B82A8435A90096312C /* Jamf Protect ULF Uploader */ = {
+			isa = PBXGroup;
+			children = (
+				FBACB3B92A8435A90096312C /* Jamf_Protect_ULF_UploaderApp.swift */,
+				FBACB3BB2A8435A90096312C /* ContentView.swift */,
+				FBDA126D2A85789000A69778 /* JamfProtectAPI.swift */,
+				FBACB3BD2A8435AA0096312C /* Assets.xcassets */,
+				FBACB3C22A8435AA0096312C /* Jamf_Protect_ULF_Uploader.entitlements */,
+				FBACB3BF2A8435AA0096312C /* Preview Content */,
+				FBACB3C82A8435CA0096312C /* Models.swift */,
+				FBACB3CD2A850FB90096312C /* Logger.swift */,
+				FBACB3CF2A850FEB0096312C /* Keychain.swift */,
+				FBACB3D12A8510410096312C /* SettingsView.swift */,
+			);
+			path = "Jamf Protect ULF Uploader";
+			sourceTree = "<group>";
+		};
+		FBACB3BF2A8435AA0096312C /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				FBACB3C02A8435AA0096312C /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FBACB3B52A8435A90096312C /* Jamf Protect ULF Uploader */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FBACB3C52A8435AA0096312C /* Build configuration list for PBXNativeTarget "Jamf Protect ULF Uploader" */;
+			buildPhases = (
+				FBACB3B22A8435A90096312C /* Sources */,
+				FBACB3B32A8435A90096312C /* Frameworks */,
+				FBACB3B42A8435A90096312C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Jamf Protect ULF Uploader";
+			packageProductDependencies = (
+				FBACB3CB2A84362A0096312C /* Yams */,
+			);
+			productName = "Jamf Protect ULF Uploader";
+			productReference = FBACB3B62A8435A90096312C /* Jamf Protect ULF Uploader.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FBACB3AE2A8435A90096312C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1430;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					FBACB3B52A8435A90096312C = {
+						CreatedOnToolsVersion = 14.3.1;
+					};
+				};
+			};
+			buildConfigurationList = FBACB3B12A8435A90096312C /* Build configuration list for PBXProject "Jamf Protect ULF Uploader" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FBACB3AD2A8435A90096312C;
+			packageReferences = (
+				FBACB3CA2A84362A0096312C /* XCRemoteSwiftPackageReference "Yams" */,
+			);
+			productRefGroup = FBACB3B72A8435A90096312C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FBACB3B52A8435A90096312C /* Jamf Protect ULF Uploader */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FBACB3B42A8435A90096312C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBACB3C12A8435AA0096312C /* Preview Assets.xcassets in Resources */,
+				FBACB3BE2A8435AA0096312C /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FBACB3B22A8435A90096312C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FBACB3C92A8435CA0096312C /* Models.swift in Sources */,
+				FBDA126E2A85789000A69778 /* JamfProtectAPI.swift in Sources */,
+				FBACB3BC2A8435A90096312C /* ContentView.swift in Sources */,
+				FBACB3BA2A8435A90096312C /* Jamf_Protect_ULF_UploaderApp.swift in Sources */,
+				FBACB3D22A8510410096312C /* SettingsView.swift in Sources */,
+				FBACB3CE2A850FB90096312C /* Logger.swift in Sources */,
+				FBACB3D02A850FEB0096312C /* Keychain.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FBACB3C32A8435AA0096312C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FBACB3C42A8435AA0096312C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		FBACB3C62A8435AA0096312C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Jamf Protect ULF Uploader/Jamf_Protect_ULF_Uploader.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 23;
+				DEVELOPMENT_ASSET_PATHS = "\"Jamf Protect ULF Uploader/Preview Content\"";
+				DEVELOPMENT_TEAM = VR4GB7TBDP;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 0.8.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jamf.Jamf-Protect-ULF-Uploader";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FBACB3C72A8435AA0096312C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Jamf Protect ULF Uploader/Jamf_Protect_ULF_Uploader.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 23;
+				DEVELOPMENT_ASSET_PATHS = "\"Jamf Protect ULF Uploader/Preview Content\"";
+				DEVELOPMENT_TEAM = VR4GB7TBDP;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 0.8.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jamf.Jamf-Protect-ULF-Uploader";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FBACB3B12A8435A90096312C /* Build configuration list for PBXProject "Jamf Protect ULF Uploader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBACB3C32A8435AA0096312C /* Debug */,
+				FBACB3C42A8435AA0096312C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FBACB3C52A8435AA0096312C /* Build configuration list for PBXNativeTarget "Jamf Protect ULF Uploader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBACB3C62A8435AA0096312C /* Debug */,
+				FBACB3C72A8435AA0096312C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FBACB3CA2A84362A0096312C /* XCRemoteSwiftPackageReference "Yams" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jpsim/Yams.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FBACB3CB2A84362A0096312C /* Yams */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FBACB3CA2A84362A0096312C /* XCRemoteSwiftPackageReference "Yams" */;
+			productName = Yams;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = FBACB3AE2A8435A90096312C /* Project object */;
+}
