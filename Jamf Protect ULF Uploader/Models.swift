@@ -6,7 +6,10 @@
 //
 
 import Foundation
-// MARK: - Welcome6Element
+
+
+// MARK: - GitBranch
+
 struct GitBranch : Codable {
     let name: String
     let commit: Commit
@@ -20,10 +23,10 @@ struct GitBranch : Codable {
     
 }
 
-
 typealias GitBranches = [GitBranch]
 
 
+// MARK: - ULFilter
 
 struct ULFilter : Codable, Identifiable {
     let id = UUID()
@@ -32,6 +35,7 @@ struct ULFilter : Codable, Identifiable {
     let description: String
     let predicate: String
     let tags: [String]
+    var tagsDiplay: String { return tags.joined(separator: ", ")}
     let enabled: Bool
     enum CodingKeys: String, CodingKey {
         case name,description,predicate
@@ -43,7 +47,7 @@ struct ULFilter : Codable, Identifiable {
 
 
 
-// MARK: - Welcome
+// MARK: - UnifiedLoggingBranch
 struct UnifiedLoggingBranch: Codable {
     let files: [File]
 
@@ -52,7 +56,6 @@ struct UnifiedLoggingBranch: Codable {
     }
 }
 
-// MARK: - WelcomeAuthor
 // MARK: - File
 struct File: Codable {
     let sha, filename: String

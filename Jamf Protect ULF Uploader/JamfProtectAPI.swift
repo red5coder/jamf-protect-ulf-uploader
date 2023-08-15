@@ -17,7 +17,7 @@ struct JamfAuth: Decodable {
 
 
 struct JamfProtectAPI {
-    
+        
     func createFilter(protectURL: String, access_token: String, ulfilter: ULFilter) async -> Int? {
         Logger.protect.info("About to upload filter \(ulfilter.name, privacy: .public).")
         guard var jamfAuthEndpoint = URLComponents(string: protectURL) else {

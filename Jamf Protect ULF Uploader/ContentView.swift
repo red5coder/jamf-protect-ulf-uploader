@@ -24,33 +24,61 @@ struct ContentView: View {
     @State private var ulfilters = [ULFilter]()
     
     @State private var uploadButtonDisabled = true
+    
+    @State private var sortOrder = [KeyPathComparator(\ULFilter.name)]
 
+    @State private var searchTerm = ""
+
+    private var searchResults: [ULFilter] {
+        if searchTerm.isEmpty {
+            return ulfilters.filter { _ in true }
+        } else {
+            return ulfilters.filter {  $0.name.lowercased().contains(searchTerm.lowercased())  || $0.tagsDiplay.lowercased().contains(searchTerm.lowercased())     }
+        }
+    }
+
+    
     var body: some View {
         VStack {
-            Table(ulfilters) {
-                TableColumn("Include") { item in
-                    Toggle("", isOn: Binding<Bool>(
-                       get: {
-                          return item.include
-                       },
-                       set: {
-                           if let index = ulfilters.firstIndex(where: { $0.id == item.id }) {
-                               ulfilters[index].include = $0
-                           }
-                           var disableupload = true
-                           ulfilters.forEach {
-                               if $0.include {
-                                   disableupload = false
+//            NavigationStack {
+                
+                
+                Table(searchResults, sortOrder: $sortOrder) {
+                    TableColumn("Include") { item in
+                        Toggle("", isOn: Binding<Bool>(
+                           get: {
+                              return item.include
+                           },
+                           set: {
+                               if let index = ulfilters.firstIndex(where: { $0.id == item.id }) {
+                                   ulfilters[index].include = $0
                                }
-                               uploadButtonDisabled = disableupload
+                               var disableupload = true
+                               ulfilters.forEach {
+                                   if $0.include {
+                                       disableupload = false
+                                   }
+                                   uploadButtonDisabled = disableupload
+                               }
                            }
-                       }
-                    ))
+                        ))
+
+                    }
+                    .width(45)
+                    TableColumn("Filter Name", value: \.name)
+                    TableColumn("Tags" ,value: \.tagsDiplay)
 
                 }
-                .width(45)
-                TableColumn("Filter Name", value: \.name)
-            }
+                .onChange(of: sortOrder) { newOrder in
+                    ulfilters.sort(using: newOrder)
+                }
+                .searchable(text: $searchTerm, prompt: "Name or tag")
+//            }
+            
+            
+            
+            
+            
 
             HStack {
                 
@@ -107,20 +135,31 @@ struct ContentView: View {
                 dismissButton: .default(Text("OK"))
                 )
     }
-
     
+    
+
+    // MARK: - uploadFilters
+
     func uploadFilters() async {
         showActivity = true
+        var succesfullUploadCount = 0
         for filter in ulfilters {
             if filter.include {
                 print("We will upload \(filter.name)")
-                await uploadFilter(filter: filter)
+                if let responseCode = await uploadFilter(filter: filter), responseCode == 200 {
+                    succesfullUploadCount = succesfullUploadCount + 1
+                }
             }
         }
         showActivity = false
+        print("Upload count \(succesfullUploadCount)")
+        alertMessage = "\(succesfullUploadCount) Unified Logging Filters Uploaded."
+        alertTitle = "Upload Results"
+        showAlert = true
+
     }
     
-    func uploadFilter(filter: ULFilter) async  {
+    func uploadFilter(filter: ULFilter) async -> Int? {
         let defaults = UserDefaults.standard
         clientID = defaults.string(forKey: "clientID") ?? ""
         protectURL = defaults.string(forKey: "protectURL") ?? ""
@@ -135,87 +174,20 @@ struct ContentView: View {
             alertMessage = "Could not authenticate. Please check the url and authentication details"
             alertTitle = "Authentication Error"
             showAlert = true
-            return
+            return nil
         }
         Logger.protect.info("Sucessfully authenticated to Protect.")
         
         let responseCode = await jamfProtect.createFilter(protectURL: protectURL, access_token: authToken.access_token, ulfilter: filter)
-        
+        return responseCode
     }
     
     
     
-    func getYamlFiles (fileURLS: [String]) async throws-> [ULFilter] {
-        var ulfilters = [ULFilter]()
-        try await withThrowingTaskGroup(of: (ULFilter?).self) { group in
-          for file in fileURLS {
-            group.addTask {
-              return (try await getYamlFile(fileURL: file))
-            }
-          }
-          for try await (ulfilter) in group {
-              if let ulfilter = ulfilter {
-                  ulfilters.append(ulfilter)
-              }
-          }
-        }
-        return ulfilters
-    }
-    
-    func handleQuotes(string: String) -> String {
-        
-        var array = string.components(separatedBy: "predicate:")
-        let subsection = array[1].components(separatedBy: "tags:")
-        var predicate = subsection[0]
-        predicate = predicate.replacingOccurrences(of: "\"", with: "'")
-        if let range = predicate.range(of: String("'")) {
-            predicate.replaceSubrange(range, with: String("\""))
-        }
-        if let range = predicate.range(of: String("'"), options: .backwards) {
-            predicate.replaceSubrange(range, with: String("\""))
-        }
 
 
-        var finalString = array[0]
 
-        finalString = finalString + "predicate:"
-
-        finalString = finalString + predicate
-
-        finalString = finalString + "tags:"
-        finalString = finalString + subsection[1]
-
-        return finalString
-    }
-
-
-    func getYamlFile (fileURL: String) async throws -> ULFilter? {
-        guard let url = URL(string: fileURL) else {
-            throw ThumbnailError.invalidURL
-        }
-        let result: (data: Data, response: URLResponse) = try await URLSession.shared.data(from: url)
-        let decoder = YAMLDecoder()
-
-        let encodedString = String(decoding: result.data, as: UTF8.self)
-        let encodedStringQuoted = handleQuotes(string: encodedString)
-//        print(encodedString)
-        do {
-            let ulfilter = try decoder.decode(ULFilter.self, from: encodedStringQuoted, userInfo: [:])
-            print("*** Converted")
-            return ulfilter
-        }  catch  {
-            print("Error: Could not decode \(error.localizedDescription)")
-    //                    Logger.mscp.error("Status: Failed to decode \(buildBaseline.path, privacy: .public)")
-        }
-        return nil
-    }
-
-    enum ThumbnailError: Error {
-        case invalidURL
-        case missingData
-    }
-
-
+    // MARK: - Github
     func getBranchDetails(branchURL: String) async -> [String]? {
         guard let url = URL(string: branchURL) else { return nil}
         var branchRequest = URLRequest(url: url)
@@ -283,8 +255,76 @@ struct ContentView: View {
         }
     }
 
+    func getYamlFiles (fileURLS: [String]) async throws-> [ULFilter] {
+        var ulfilters = [ULFilter]()
+        try await withThrowingTaskGroup(of: (ULFilter?).self) { group in
+          for file in fileURLS {
+            group.addTask {
+              return (try await getYamlFile(fileURL: file))
+            }
+          }
+          for try await (ulfilter) in group {
+              if let ulfilter = ulfilter {
+                  ulfilters.append(ulfilter)
+              }
+          }
+        }
+        return ulfilters
+    }
     
-    
+    func handleQuotes(string: String) -> String {
+        
+        var array = string.components(separatedBy: "predicate:")
+        let subsection = array[1].components(separatedBy: "tags:")
+        var predicate = subsection[0]
+        predicate = predicate.replacingOccurrences(of: "\"", with: "'")
+        if let range = predicate.range(of: String("'")) {
+            predicate.replaceSubrange(range, with: String("\""))
+        }
+        if let range = predicate.range(of: String("'"), options: .backwards) {
+            predicate.replaceSubrange(range, with: String("\""))
+        }
+
+
+        var finalString = array[0]
+
+        finalString = finalString + "predicate:"
+
+        finalString = finalString + predicate
+
+        finalString = finalString + "tags:"
+        finalString = finalString + subsection[1]
+
+        return finalString
+    }
+
+
+    func getYamlFile (fileURL: String) async throws -> ULFilter? {
+        guard let url = URL(string: fileURL) else {
+            throw ThumbnailError.invalidURL
+        }
+        let result: (data: Data, response: URLResponse) = try await URLSession.shared.data(from: url)
+        let decoder = YAMLDecoder()
+
+        let encodedString = String(decoding: result.data, as: UTF8.self)
+        let encodedStringQuoted = handleQuotes(string: encodedString)
+//        print(encodedString)
+        do {
+            let ulfilter = try decoder.decode(ULFilter.self, from: encodedStringQuoted, userInfo: [:])
+            print("Converted \(ulfilter.name)")
+            return ulfilter
+        }  catch  {
+            print("Error: Could not decode \(error.localizedDescription)")
+    //                    Logger.mscp.error("Status: Failed to decode \(buildBaseline.path, privacy: .public)")
+        }
+        return nil
+    }
+
+    enum ThumbnailError: Error {
+        case invalidURL
+        case missingData
+    }
+
     
     
     
