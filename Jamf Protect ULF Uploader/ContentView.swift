@@ -40,9 +40,6 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
-//            NavigationStack {
-                
-                
                 Table(searchResults, sortOrder: $sortOrder) {
                     TableColumn("Include") { item in
                         Toggle("", isOn: Binding<Bool>(
@@ -73,20 +70,21 @@ struct ContentView: View {
                     ulfilters.sort(using: newOrder)
                 }
                 .searchable(text: $searchTerm, prompt: "Name or tag")
-//            }
-            
-            
-            
-            
-            
-
             HStack {
-                
                 Button("Fetch Filters") {
                     Task {
-                        if let branchURL = await getBranch(branchname: "convert_UL_to_YAML") {
-                            if let fileURLS = await getBranchDetails(branchURL: branchURL) {
-                                if let fetchedulfilters = try? await getYamlFiles(fileURLS: fileURLS) {
+                        if let unifiedLogsURL = await getBranch(branchname: "unified_log_filters") {
+                            var branchYamlFiles = await getBranchDetails(branchURL: unifiedLogsURL, type: "blob")
+                            var branchYamlDirectories = await getBranchDetails(branchURL: unifiedLogsURL, type: "tree")
+                            if let branchYamlDirectories = branchYamlDirectories {
+                                for directory in branchYamlDirectories {
+                                    var extraYAML = await getBranchDetails(branchURL: directory, type: "blob")
+                                    branchYamlFiles?.append(contentsOf: extraYAML ?? [])
+                                }
+                            }
+                            
+                            if let branchYamlFiles = branchYamlFiles {
+                                if let fetchedulfilters = try? await getYamlFiles(fileURLS: branchYamlFiles) {
                                     ulfilters = fetchedulfilters.sorted { $0.name < $1.name }
                                 }
                             }
@@ -102,16 +100,11 @@ struct ContentView: View {
                 }
                 .disabled(uploadButtonDisabled)
                 
-//                if showActivity {
                 ProgressView()
                         .scaleEffect(0.5)
                         .opacity(showActivity ? 1 : 0)
-//                }
-
                 
             }
-            
-            
         }
         .padding()
         .alert(isPresented: self.$showAlert,
@@ -145,14 +138,12 @@ struct ContentView: View {
         var succesfullUploadCount = 0
         for filter in ulfilters {
             if filter.include {
-                print("We will upload \(filter.name)")
                 if let responseCode = await uploadFilter(filter: filter), responseCode == 200 {
                     succesfullUploadCount = succesfullUploadCount + 1
                 }
             }
         }
         showActivity = false
-        print("Upload count \(succesfullUploadCount)")
         alertMessage = "\(succesfullUploadCount) Unified Logging Filters Uploaded."
         alertTitle = "Upload Results"
         showAlert = true
@@ -188,7 +179,7 @@ struct ContentView: View {
 
 
     // MARK: - Github
-    func getBranchDetails(branchURL: String) async -> [String]? {
+    func getBranchDetails(branchURL: String , type: String) async -> [String]? {
         guard let url = URL(string: branchURL) else { return nil}
         var branchRequest = URLRequest(url: url)
         branchRequest.httpMethod = "GET"
@@ -200,10 +191,13 @@ struct ContentView: View {
         do {
             let unifiedLoggingBranch = try JSONDecoder().decode(UnifiedLoggingBranch.self, from: data)
             var files = [String]()
-            for file in unifiedLoggingBranch.files {
+            for file in unifiedLoggingBranch.tree {
 
-                if file.filename.lowercased().contains(".yaml") {
-                    files.append(file.rawURL)
+                
+                if file.path.lowercased().hasSuffix(".yaml") && file.type.lowercased() == type {
+                    files.append(file.url)
+                } else if file.type.lowercased() == type && type == "tree"{
+                    files.append(file.url)
                 }
 
             }
@@ -217,6 +211,10 @@ struct ContentView: View {
     //        Logger.laps.error("No Computer ID found")
             return nil
         }
+
+
+        return nil
+
     }
 
 
@@ -226,12 +224,14 @@ struct ContentView: View {
             return nil
         }
 
-        branchesEndPoint.path="/repos/jamf/jamfprotect/branches"
+        branchesEndPoint.path="/repos/jamf/jamfprotect/contents"
+        let queryItems = [URLQueryItem(name: "ref", value: "main")]
+
+        branchesEndPoint.queryItems = queryItems
         guard let url = branchesEndPoint.url else {
             return nil
         
         }
-        
         var branchRequest = URLRequest(url: url)
         branchRequest.httpMethod = "GET"
         branchRequest.setValue("application/vnd.github.v3+json", forHTTPHeaderField: "Accept")
@@ -239,12 +239,11 @@ struct ContentView: View {
         else {
             return  nil
         }
-
         do {
             let branches = try JSONDecoder().decode(GitBranches.self, from: data)
             for branch in branches {
-                if branch.name.lowercased().contains(branchname.lowercased()) {
-                    return branch.commit.url
+                if branch.name.lowercased() == "unified_log_filters" && branch.type.lowercased() == "dir" {
+                    return branch.git_url
                 }
             }
             return nil
@@ -253,6 +252,9 @@ struct ContentView: View {
     //        Logger.laps.error("No Computer ID found")
             return nil
         }
+        
+        return nil
+        
     }
 
     func getYamlFiles (fileURLS: [String]) async throws-> [ULFilter] {
@@ -307,14 +309,27 @@ struct ContentView: View {
         let decoder = YAMLDecoder()
 
         let encodedString = String(decoding: result.data, as: UTF8.self)
-        let encodedStringQuoted = handleQuotes(string: encodedString)
-//        print(encodedString)
         do {
-            let ulfilter = try decoder.decode(ULFilter.self, from: encodedStringQuoted, userInfo: [:])
-            print("Converted \(ulfilter.name)")
-            return ulfilter
+//            let ulfilter = try decoder.decode(ULFilter.self, from: encodedStringQuoted, userInfo: [:])
+            let encodedulfilter = try decoder.decode(EncodedULFilter.self, from: encodedString, userInfo: [:])
+
+            
+            let decodedContents = try Data.decodeUrlSafeBase64(encodedulfilter.content)
+            let decodedContentsString = String(decoding: decodedContents, as: UTF8.self)
+            let decodedContentsStringQuotes = handleQuotes(string: decodedContentsString)
+            do {
+                let ulfilter = try decoder.decode(ULFilter.self, from: decodedContentsStringQuotes, userInfo: [:])
+                return ulfilter
+
+            } catch {
+                print("Errorss: Could not decode, \(fileURL) \(error.localizedDescription)")
+            }
+            
+            
+            
+            return nil //encodedulfilter
         }  catch  {
-            print("Error: Could not decode \(error.localizedDescription)")
+            print("Errors: Could not decode \(error.localizedDescription)")
     //                    Logger.mscp.error("Status: Failed to decode \(buildBaseline.path, privacy: .public)")
         }
         return nil
@@ -326,9 +341,7 @@ struct ContentView: View {
     }
 
     
-    
-    
-    
+
     
     
     
@@ -361,3 +374,6 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
+
+

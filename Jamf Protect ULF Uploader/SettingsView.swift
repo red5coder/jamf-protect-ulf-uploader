@@ -114,15 +114,12 @@ struct SettingsView: View {
 
     
     func verifyCredentials() async {
-        print("verifyCredentials")
         let jamfProtect = JamfProtectAPI()
         let (authToken, httpRespoonse) = await jamfProtect.getToken(protectURL: protectURL, clientID: clientID, password: password)
         if let httpRespoonse = httpRespoonse, httpRespoonse == 200 {
-           print("Success")
             alertTitle = "Authentication"
             alertMessage = "Successfully Authenticated."
         } else {
-            print("failure")
             alertTitle = "Authentication"
             alertMessage = "Failed to Authenticate."
         }

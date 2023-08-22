@@ -12,18 +12,25 @@ import Foundation
 
 struct GitBranch : Codable {
     let name: String
-    let commit: Commit
-    let protected: Bool
-    // MARK: - Commit
-    struct Commit : Codable {
-        let sha: String
-        let url: String
-    }
-
+    let git_url: String
+    let type: String
     
 }
 
 typealias GitBranches = [GitBranch]
+
+
+// MARK: - RawULFilter
+struct EncodedULFilter : Codable {
+    let url: String
+    let content: String
+    let encoding: String
+    enum CodingKeys: String, CodingKey {
+        case url
+        case content
+        case encoding
+    }
+}
 
 
 // MARK: - ULFilter
@@ -47,27 +54,48 @@ struct ULFilter : Codable, Identifiable {
 
 
 
+
+
+
+
 // MARK: - UnifiedLoggingBranch
 struct UnifiedLoggingBranch: Codable {
-    let files: [File]
+    let tree: [File]
 
     enum CodingKeys: String, CodingKey {
-        case files
+        case tree
     }
 }
 
 // MARK: - File
 struct File: Codable {
-    let sha, filename: String
-    let additions, deletions, changes: Int
-    let blobURL, rawURL, contentsURL: String
-    let patch: String
+    let path, url: String
+    let type: String
 
     enum CodingKeys: String, CodingKey {
-        case sha, filename, additions, deletions, changes
-        case blobURL = "blob_url"
-        case rawURL = "raw_url"
-        case contentsURL = "contents_url"
-        case patch
+        case path, url
+        case type
+    }
+    
+}
+
+
+extension Data {
+    static func decodeUrlSafeBase64(_ value: String) throws -> Data {
+        var stringtoDecode: String = value.replacingOccurrences(of: "-", with: "+")
+        stringtoDecode = stringtoDecode.replacingOccurrences(of: "_", with: "/")
+//        switch (stringtoDecode.utf8.count % 4) {
+//            case 2:
+//                stringtoDecode += "=="
+//            case 3:
+//                stringtoDecode += "="
+//            default:
+//                break
+//        }
+        guard let data = Data(base64Encoded: stringtoDecode, options: [.ignoreUnknownCharacters]) else {
+            throw NSError(domain: "decodeUrlSafeBase64", code: 1,
+                        userInfo: [NSLocalizedDescriptionKey: "Can't decode base64 string"])
+        }
+        return data
     }
 }

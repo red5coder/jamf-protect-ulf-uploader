@@ -36,7 +36,6 @@ struct JamfProtectAPI {
         
         var predicate = ulfilter.predicate
         predicate = predicate.replacingOccurrences(of: "'", with: "\\\"")
-        print(predicate)
         
         var enabled = "false"
         if ulfilter.enabled {
@@ -81,7 +80,6 @@ mutation createFilter {
         }
 
         let httpResponse = response as? HTTPURLResponse
-        print(httpResponse?.statusCode)
         return httpResponse?.statusCode
 
         
@@ -122,9 +120,6 @@ mutation createFilter {
         let httpResponse = response as? HTTPURLResponse
 
         
-        let str = String(decoding: data, as: UTF8.self)
-
-        print(str)
         do {
             let protectToken = try JSONDecoder().decode(JamfAuth.self, from: data)
             Logger.protect.info("Authentication token decoded.")
