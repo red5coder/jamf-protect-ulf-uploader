@@ -13,4 +13,5 @@ extension Logger {
 
     //Categories
     static let protect = Logger(subsystem: subsystem, category: "protect")
+    static let github = Logger(subsystem: subsystem, category: "github")
 }

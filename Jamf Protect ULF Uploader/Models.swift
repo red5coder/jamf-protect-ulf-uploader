@@ -9,15 +9,12 @@ import Foundation
 
 
 // MARK: - GitBranch
-
-struct GitBranch : Codable {
+struct GitMainBranch : Codable {
     let name: String
     let git_url: String
     let type: String
-    
 }
-
-typealias GitBranches = [GitBranch]
+typealias GitMainBranchContents = [GitMainBranch]
 
 
 // MARK: - RawULFilter
@@ -32,9 +29,7 @@ struct EncodedULFilter : Codable {
     }
 }
 
-
 // MARK: - ULFilter
-
 struct ULFilter : Codable, Identifiable {
     let id = UUID()
     var include = false
@@ -49,19 +44,11 @@ struct ULFilter : Codable, Identifiable {
         case tags
         case enabled
     }
-
 }
-
-
-
-
-
-
 
 // MARK: - UnifiedLoggingBranch
 struct UnifiedLoggingBranch: Codable {
     let tree: [File]
-
     enum CodingKeys: String, CodingKey {
         case tree
     }
@@ -71,12 +58,10 @@ struct UnifiedLoggingBranch: Codable {
 struct File: Codable {
     let path, url: String
     let type: String
-
     enum CodingKeys: String, CodingKey {
         case path, url
         case type
     }
-    
 }
 
 

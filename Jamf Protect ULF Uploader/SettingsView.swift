@@ -12,8 +12,6 @@ struct SettingsView: View {
     @AppStorage("clientID") var clientID: String = ""
     
     @State private var verifyButtonDisabled = true
-//    @AppStorage("savePassword") var savePassword: Bool = false
-//    @State private var key = ""
     @State private var password = ""
     
     @State private var showAlert = false
@@ -23,13 +21,11 @@ struct SettingsView: View {
     var body: some View {
         VStack(alignment: .trailing){
             HStack(alignment: .center) {
-                
                 VStack(alignment: .trailing, spacing: 12.0) {
                     Text("Jamf Protect URL:")
                     Text("Client ID:")
                     Text("Password:")
                 }
-                
                 VStack(alignment: .leading, spacing: 7.0) {
                     TextField("https://your-jamf-protect-server.com" , text: $protectURL)
                         .textFieldStyle(.roundedBorder)
@@ -40,7 +36,6 @@ struct SettingsView: View {
                                 verifyButtonDisabled = false
                             }
                         }
-
                     TextField("Your Jamf Protect Client ID" , text: $clientID)
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: clientID) { newValue in
@@ -50,7 +45,6 @@ struct SettingsView: View {
                                 verifyButtonDisabled = false
                             }
                         }
-
                     SecureField("Your Jamf Protect API Password" , text: $password)
                         .textFieldStyle(.roundedBorder)
                         .onChange(of: password) { newValue in
@@ -64,13 +58,11 @@ struct SettingsView: View {
                 }
             }
             .padding()
-            
             HStack(alignment: .center) {
                 Spacer()
                 Button("Verify") {
                     Task {
                         await verifyCredentials()
-    //                    await uploadFilters()
                     }
                 }
                 .disabled(verifyButtonDisabled)
@@ -80,22 +72,15 @@ struct SettingsView: View {
                    content: {
                 self.showCustomAlert()
             })
-
-            
         }
         .onAppear {
             let defaults = UserDefaults.standard
             clientID = defaults.string(forKey: "clientID") ?? ""
             protectURL = defaults.string(forKey: "protectURL") ?? ""
-//            savePassword = defaults.bool(forKey: "savePassword" )
-//            if savePassword  {
-                let credentialsArray = Keychain().retrieve(service: "com.jamf.Jamf-Protect-ULF-Uploader")
+                let credentialsArray = Keychain().retrieve(service: "uk.co.mallion.jamf-protect-ulf-uploader")
                 if credentialsArray.count == 2 {
-//                    key = credentialsArray[0]
                     password = credentialsArray[1]
                 }
-//            }
-            
             if clientID.isEmpty || protectURL.isEmpty || password.isEmpty {
                 verifyButtonDisabled = true
             } else {
@@ -111,7 +96,6 @@ struct SettingsView: View {
                 dismissButton: .default(Text("OK"))
                 )
     }
-
     
     func verifyCredentials() async {
         let jamfProtect = JamfProtectAPI()
@@ -128,7 +112,7 @@ struct SettingsView: View {
     
     func savePasswordToKeychain() {
         DispatchQueue.global(qos: .background).async {
-            Keychain().save(service: "com.jamf.Jamf-Protect-ULF-Uploader", account: "apiclient", data: password)
+            Keychain().save(service: "uk.co.mallion.jamf-protect-ulf-uploader", account: "apiclient", data: password)
         }
     }
 }

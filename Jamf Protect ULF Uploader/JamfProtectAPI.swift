@@ -25,7 +25,6 @@ struct JamfProtectAPI {
             return nil
         }
         jamfAuthEndpoint.path="/graphql"
-
         guard let url = jamfAuthEndpoint.url else {
             Logger.protect.error("Protect URL seems invalid.")
             return nil
@@ -33,20 +32,16 @@ struct JamfProtectAPI {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("\(access_token)", forHTTPHeaderField: "Authorization")
-        
         var predicate = ulfilter.predicate
         predicate = predicate.replacingOccurrences(of: "'", with: "\\\"")
-        
         var enabled = "false"
         if ulfilter.enabled {
             enabled = "true"
         }
-        
         var tags = ""
         for tag in ulfilter.tags {
             tags = tags + "\"\(tag)\","
         }
-        
         let createFilter = """
 mutation createFilter {
   createUnifiedLoggingFilter(
@@ -72,18 +67,17 @@ mutation createFilter {
         if let jsonData = jsonData {
             request.httpBody = jsonData
         }
-        
         guard let (data, response) = try? await URLSession.shared.data(for: request)
         else {
             Logger.protect.error("Could not initiate connection to \(url, privacy: .public).")
             return nil
         }
+        if let httpResponse = response as? HTTPURLResponse  {
+            Logger.protect.info("HTTP Response \(httpResponse.statusCode, privacy: .public) to uplaoding filter \(ulfilter.name , privacy: .public)")
+        }
 
         let httpResponse = response as? HTTPURLResponse
         return httpResponse?.statusCode
-
-        
-        
     }
 
     func getToken(protectURL: String , clientID: String, password: String) async  -> (JamfAuth?,Int?) {
@@ -92,34 +86,25 @@ mutation createFilter {
             Logger.protect.error("Protect URL seems invalid.")
             return (nil, nil)
         }
-        
         jamfAuthEndpoint.path="/token"
-        
         guard let url = jamfAuthEndpoint.url else {
             Logger.protect.error("Protect URL seems invalid.")
             return (nil, nil)
         }
-
         var authRequest = URLRequest(url: url)
         authRequest.httpMethod = "POST"
-        
         let json: [String: Any] = ["client_id": clientID,
                                    "password": password]
-        
         let jsonData = try? JSONSerialization.data(withJSONObject: json)
         if let jsonData = jsonData {
             authRequest.httpBody = jsonData
         }
-        
         guard let (data, response) = try? await URLSession.shared.data(for: authRequest)
         else {
             Logger.protect.error("Could not initiate connection to \(url, privacy: .public).")
             return (nil, nil)
         }
-        
         let httpResponse = response as? HTTPURLResponse
-
-        
         do {
             let protectToken = try JSONDecoder().decode(JamfAuth.self, from: data)
             Logger.protect.info("Authentication token decoded.")
@@ -129,10 +114,5 @@ mutation createFilter {
             return (nil, httpResponse?.statusCode)
         }
     }
-    
-
-    
-    
-    
     
 }
