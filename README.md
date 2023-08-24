@@ -25,5 +25,6 @@ The app does log to Unified Logging. You can view the logs like this:
 
 `log stream --predicate 'subsystem == "uk.co.mallion.jamf-protect-ulf-uploader"' --level info`
 
-<img width="1027" alt="mainscreen" src="https://github.com/red5coder/jamf-protect-ulf-uploader/assets/29920386/8af07155-df43-4b1f-a67c-817492fd9314">
+<img width="1027" alt="mainscreen" src="https://github.com/red5coder/jamf-protect-ulf-uploader/assets/29920386/dc8dfdee-1492-41e6-9899-6d85fe186110">
+
 
