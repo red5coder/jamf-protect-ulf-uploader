@@ -31,7 +31,11 @@ struct ContentView: View {
         if searchTerm.isEmpty {
             return ulfilters.filter { _ in true }
         } else {
-            return ulfilters.filter {  $0.name.lowercased().contains(searchTerm.lowercased())  || $0.tagsDiplay.lowercased().contains(searchTerm.lowercased())     }
+            return ulfilters.filter {
+                $0.name.lowercased().contains(searchTerm.lowercased())  ||
+                $0.description.lowercased().contains(searchTerm.lowercased()) ||
+                $0.tagsDiplay.lowercased().contains(searchTerm.lowercased())
+            }
         }
     }
     
@@ -56,13 +60,28 @@ struct ContentView: View {
                         ))
                     }
                     .width(45)
-                    TableColumn("Filter Name", value: \.name)
-                    TableColumn("Tags" ,value: \.tagsDiplay)
+                    TableColumn("Filter Name") { logfilter in
+                        Text(logfilter.name)
+                            .lineLimit(nil)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .width(ideal: 200)
+                    TableColumn("Description") { logfilter in
+                        Text(logfilter.description)
+                            .lineLimit(nil) // Allow multiple lines
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .width(ideal: 650)
+                    TableColumn("Tags") { logfilter in
+                        Text(logfilter.tagsDiplay)
+                            .lineLimit(nil) // Allow multiple lines
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
                 }
                 .onChange(of: sortOrder) { newOrder in
                     ulfilters.sort(using: newOrder)
                 }
-                .searchable(text: $searchTerm, prompt: "Name or tag")
+                .searchable(text: $searchTerm, prompt: "Search in name, description or tag")
             HStack {
                 Button("Fetch Filters") {
                     Task {
