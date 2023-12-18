@@ -4,7 +4,7 @@ The "Jamf Protect Unified Logging Filter Uploader" is a macOS app that allows yo
 
 ### Requirements
 
-- A Mac running macOS Venture (13.0) or higher
+- A Mac running macOS Ventura (13.0) or higher
 - A Jamf Protect Tenant
 - A Jamf Protect API client needs to be created with the following permissions. 
   - Read and Write for Unified Logging
