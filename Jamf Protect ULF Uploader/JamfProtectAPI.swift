@@ -47,6 +47,7 @@ mutation createFilter {
   createUnifiedLoggingFilter(
     input: {
       name: "\(ulfilter.name)"
+      description: "\(ulfilter.description)"
       filter: "\(predicate)"
       enabled: \(enabled)
       tags: [\(tags)]
